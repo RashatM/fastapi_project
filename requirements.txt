@@ -5,4 +5,5 @@ sqlalchemy==2.0.15
 alembic
 passlib
 jose
+python-jose
 bcrypt

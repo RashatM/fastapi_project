@@ -17,3 +17,11 @@ class UserIsNotAuthorizedException(AppException):
     @property
     def message(self) -> str:
         return "Пользователь не авторизован"
+
+
+@dataclass
+class TokenAbsentException(AppException):
+
+    @property
+    def message(self) -> str:
+        return "Токен отсутствует"

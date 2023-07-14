@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 
+
 from app.database import create_pool
 from app.dependencies import setup_di
 from app.exceptions.error_handlers import setup_exception_handlers

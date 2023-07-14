@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Response, status
 
 
-from app.dependencies.users import get_user_service
+from app.dependencies.users import get_auth_service
 from app.exceptions.auth import UserAlreadyExistsException
 from app.exceptions.error_handlers.error_result import ErrorResult
-from app.services.auth import UserService
+from app.services.auth import AuthenticationService
 from app.schemas.users import UserAuthSchema
 
 auth_router = APIRouter(
@@ -21,13 +21,18 @@ auth_router = APIRouter(
         }
     },
     status_code=status.HTTP_201_CREATED)
-async def register_user(user_data: UserAuthSchema, service: UserService = Depends(get_user_service)):
+async def register_user(user_data: UserAuthSchema, service: AuthenticationService = Depends(get_auth_service)):
     await service.add_user(user_data)
 
 
 @auth_router.post("/login")
-async def login_user(user_data: UserAuthSchema, service: UserService = Depends(get_user_service)):
-    pass
+async def login_user(
+        response: Response,
+        user_data: UserAuthSchema,
+        service: AuthenticationService = Depends(get_auth_service)
+):
+    token = await service.login_user(user_data.email, user_data.password)
+    response.set_cookie("booking_access_token", token.access_token, httponly=True)
 
 
 
