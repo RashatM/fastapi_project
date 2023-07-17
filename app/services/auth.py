@@ -1,12 +1,15 @@
+from jose import jwt
 from pydantic import EmailStr
 from fastapi import Response
 
 from app.adapters.encrypt_adapter import EncryptionAdapter
-from app.exceptions.auth import UserAlreadyExistsException, UserIsNotAuthorizedException
+from app.config import settings
+from app.exceptions.auth_exceptions import UserAlreadyExistsException, UserIsNotAuthorizedException, \
+    UserIsNotExistsException
 from app.models.users import UserModel
 from app.providers.auth_provider import AuthenticationProvider
 from app.repositories.users import UserRepository
-from app.schemas.users import UserAuthSchema, Token
+from app.schemas.auth import UserSchema, UserAuthRequestSchema, Token
 from app.unit_of_work.uow import UnitOfWork
 
 
@@ -24,10 +27,10 @@ class AuthenticationService:
         self.auth_provider = auth_provider
         self.encrypt_adapter = encrypt_adapter
 
-    def is_exist_user(self, email: EmailStr):
-        return self.user_repository.get_user_by_email(email=email)
+    async def is_exist_user(self, email: EmailStr) -> UserModel:
+        return await self.user_repository.get_user_by_email(email=email)
 
-    async def add_user(self, user_data: UserAuthSchema) -> UserModel:
+    async def add_user(self, user_data: UserAuthRequestSchema) -> UserSchema:
         if await self.is_exist_user(user_data.email):
             raise UserAlreadyExistsException
 
@@ -39,7 +42,7 @@ class AuthenticationService:
         )
         await self.uow.commit()
 
-        return new_user
+        return new_user.to_dc()
 
     async def authenticate_user(self, email: EmailStr, password: str) -> UserModel:
         user = await self.is_exist_user(email=email)
@@ -52,3 +55,12 @@ class AuthenticationService:
         access_token = self.auth_provider.create_user_token(user.id)
 
         return Token(access_token=access_token)
+
+    async def verify_token(self, token: str) -> UserSchema:
+        user_id = self.auth_provider.decode_token(token)
+        user = await self.user_repository.get_user_by_id(user_id)
+
+        if not user:
+            raise UserIsNotExistsException
+        print("TYPE", type(user))
+        return user.to_dc()

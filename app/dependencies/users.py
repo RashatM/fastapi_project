@@ -1,31 +1,16 @@
+from typing import Optional
+
 from fastapi import Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.encrypt_adapter import EncryptionAdapter
+from app.dependencies.stubs import *
+from app.exceptions.auth_exceptions import TokenAbsentException
 from app.providers.auth_provider import AuthenticationProvider
 from app.repositories.users import UserRepository
+from app.schemas.auth import UserSchema
 from app.services.auth import AuthenticationService
 from app.unit_of_work.uow import UnitOfWork
-
-
-def session_provider():
-    raise NotImplementedError
-
-
-def uow_provider():
-    raise NotImplementedError
-
-
-def user_repository_provider():
-    raise NotImplementedError
-
-
-def auth_provider():
-    raise NotImplementedError
-
-
-def encrypt_provider():
-    raise NotImplementedError
 
 
 def provide_uow(session: AsyncSession = Depends(session_provider)) -> UnitOfWork:
@@ -46,13 +31,19 @@ def get_auth_service(
         uow=uow,
         user_repository=user_repository,
         auth_provider=authentication_provider,
-        encrypt=encrypt_adapter
+        encrypt_adapter=encrypt_adapter
     )
 
 
 def get_token(request: Request) -> str:
-    return request.cookies.get("booking_access_token")
+    token = request.cookies.get("booking_access_token")
+    if not token:
+        raise TokenAbsentException
+    return token
 
 
-def get_current_user(token: str = Depends(get_token)):
-    pass
+async def get_current_user(
+        token: str = Depends(get_token),
+        auth_service: AuthenticationService = Depends(get_auth_service)
+) -> Optional[UserSchema]:
+    return await auth_service.verify_token(token=token)
