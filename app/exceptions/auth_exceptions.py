@@ -57,3 +57,22 @@ class IncorrectTokenFormatException(AppException):
     @property
     def message(self) -> str:
         return "Неверный формат токена"
+
+
+@dataclass
+class TokenExpiredException(AppException):
+
+    @property
+    def message(self) -> str:
+        return "Срок действия токена истек"
+
+
+@dataclass
+class NotAvailableRoomsException(AppException):
+
+    @property
+    def message(self) -> str:
+        return "Не осталось свободных номеров"
+
+
+

@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Computed, Date, ForeignKey, Integer
 
-from app.database import Base
+from app.db.database import Base
 
 
-class Bookings(Base):
+class BookingModel(Base):
     __tablename__ = "bookings"
 
     id = Column(Integer, primary_key=True)

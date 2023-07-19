@@ -16,3 +16,7 @@ def auth_provider():
 
 def encrypt_provider():
     raise NotImplementedError
+
+
+def booking_repository_provider():
+    raise NotImplementedError

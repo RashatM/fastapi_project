@@ -1,18 +1,15 @@
-from typing import Optional
-
 from fastapi import APIRouter, Depends, Response, status
 
 
 from app.dependencies.users import get_auth_service, get_current_user
 from app.exceptions.auth_exceptions import UserAlreadyExistsException
 from app.exceptions.error_handlers.error_result import ErrorResult
-from app.models.users import UserModel
 from app.services.auth import AuthenticationService
-from app.schemas.auth import UserAuthRequestSchema, UserSchema, Token
+from app.schemas.auth import UserRequestSchema, UserPublicSchema, Token, UserPrivateSchema, UserRequestSchema
 
 auth_router = APIRouter(
     prefix="/auth",
-    tags=["auth"]
+    tags=["Аутентификация и Авторизация"]
 )
 
 
@@ -25,17 +22,17 @@ auth_router = APIRouter(
     },
     status_code=status.HTTP_201_CREATED)
 async def register_user(
-        user_data: UserAuthRequestSchema,
-        service: AuthenticationService = Depends(get_auth_service)
-) -> UserSchema:
-    return await service.add_user(user_data)
+    user_data: UserRequestSchema,
+    service: AuthenticationService = Depends(get_auth_service)
+) -> UserPrivateSchema:
+    return await service.register_new_user(user_data)
 
 
 @auth_router.post("/login")
 async def login_user(
-        response: Response,
-        user_data: UserAuthRequestSchema,
-        service: AuthenticationService = Depends(get_auth_service)
+    response: Response,
+    user_data: UserRequestSchema,
+    service: AuthenticationService = Depends(get_auth_service)
 ) -> Token:
     token = await service.login_user(user_data.email, user_data.password)
     response.set_cookie("booking_access_token", token.access_token, httponly=True)
@@ -48,7 +45,7 @@ async def logout(response: Response):
 
 
 @auth_router.get("/me")
-async def read_user_me(current_user: UserSchema = Depends(get_current_user)) -> UserSchema:
+async def read_user_me(current_user: UserPrivateSchema = Depends(get_current_user)) -> UserPrivateSchema:
     return current_user
 
 

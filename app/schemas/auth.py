@@ -1,14 +1,21 @@
 from pydantic import BaseModel, EmailStr
 
 
-class UserAuthRequestSchema(BaseModel):
+class BaseUserSchema(BaseModel):
     email: EmailStr
+
+
+class UserRequestSchema(BaseUserSchema):
     password: str
 
 
-class UserSchema(BaseModel):
+class UserPublicSchema(BaseUserSchema):
     id: int
-    email: EmailStr
+    hashed_password: str
+
+
+class UserPrivateSchema(BaseUserSchema):
+    id: int
 
 
 class Token(BaseModel):

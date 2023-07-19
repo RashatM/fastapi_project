@@ -1,37 +1,29 @@
-from jose import jwt
 from pydantic import EmailStr
-from fastapi import Response
 
 from app.adapters.encrypt_adapter import EncryptionAdapter
-from app.config import settings
-from app.exceptions.auth_exceptions import UserAlreadyExistsException, UserIsNotAuthorizedException, \
-    UserIsNotExistsException
-from app.models.users import UserModel
+from app.exceptions.auth_exceptions import UserAlreadyExistsException, UserIsNotAuthorizedException
 from app.providers.auth_provider import AuthenticationProvider
-from app.repositories.users import UserRepository
-from app.schemas.auth import UserSchema, UserAuthRequestSchema, Token
-from app.unit_of_work.uow import UnitOfWork
+from app.db.repositories.users import UserRepository
+from app.schemas.auth import UserPublicSchema, Token, UserPrivateSchema
+from app.db.unit_of_work.uow import UnitOfWork
 
 
 class AuthenticationService:
 
     def __init__(
-            self,
-            uow: UnitOfWork,
-            user_repository: UserRepository,
-            auth_provider: AuthenticationProvider,
-            encrypt_adapter: EncryptionAdapter
+        self,
+        uow: UnitOfWork,
+        user_repository: UserRepository,
+        auth_provider: AuthenticationProvider,
+        encrypt_adapter: EncryptionAdapter
     ):
         self.uow = uow
         self.user_repository = user_repository
         self.auth_provider = auth_provider
         self.encrypt_adapter = encrypt_adapter
 
-    async def is_exist_user(self, email: EmailStr) -> UserModel:
-        return await self.user_repository.get_user_by_email(email=email)
-
-    async def add_user(self, user_data: UserAuthRequestSchema) -> UserSchema:
-        if await self.is_exist_user(user_data.email):
+    async def register_new_user(self, user_data: UserPublicSchema) -> UserPrivateSchema:
+        if await self.user_repository.get_exist_user(user_data.email):
             raise UserAlreadyExistsException
 
         hashed_password = self.encrypt_adapter.get_password_hash(user_data.password)
@@ -41,11 +33,10 @@ class AuthenticationService:
             hashed_password=hashed_password
         )
         await self.uow.commit()
+        return new_user
 
-        return new_user.to_dc()
-
-    async def authenticate_user(self, email: EmailStr, password: str) -> UserModel:
-        user = await self.is_exist_user(email=email)
+    async def authenticate_user(self, email: EmailStr, password: str) -> UserPublicSchema:
+        user = await self.user_repository.get_exist_user(email=email)
         if not (user and self.encrypt_adapter.verify_password(password, user.hashed_password)):
             raise UserIsNotAuthorizedException
         return user
@@ -56,11 +47,7 @@ class AuthenticationService:
 
         return Token(access_token=access_token)
 
-    async def verify_token(self, token: str) -> UserSchema:
-        user_id = self.auth_provider.decode_token(token)
+    async def verify_token(self, token: str) -> UserPrivateSchema:
+        user_id = self.auth_provider.get_token_sub(token)
         user = await self.user_repository.get_user_by_id(user_id)
-
-        if not user:
-            raise UserIsNotExistsException
-        print("TYPE", type(user))
-        return user.to_dc()
+        return user
