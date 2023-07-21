@@ -67,12 +67,7 @@ class TokenExpiredException(AppException):
         return "Срок действия токена истек"
 
 
-@dataclass
-class NotAvailableRoomsException(AppException):
 
-    @property
-    def message(self) -> str:
-        return "Не осталось свободных номеров"
 
 
 

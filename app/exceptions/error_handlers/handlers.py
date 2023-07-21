@@ -4,6 +4,7 @@ from fastapi.requests import Request
 
 from app.exceptions.auth_exceptions import *
 from app.exceptions.error_handlers.error_result import ErrorResult
+from app.exceptions.room_exceptions import NotAvailableRoomsException, RoomIsNotExistsException
 
 
 async def unknown_exception_handler(request: Request, err: Exception) -> ORJSONResponse:
@@ -49,4 +50,8 @@ async def expired_token_handler(request: Request, err: TokenExpiredException) ->
 
 
 async def room_fully_booked_handler(request: Request, err: NotAvailableRoomsException) -> ORJSONResponse:
+    return await handle_error(request, err, status_code=status.HTTP_409_CONFLICT)
+
+
+async def room_is_not_exists_booked_handler(request: Request, err: RoomIsNotExistsException) -> ORJSONResponse:
     return await handle_error(request, err, status_code=status.HTTP_409_CONFLICT)

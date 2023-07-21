@@ -12,4 +12,5 @@ def setup_exception_handlers(app: FastAPI) -> None:
     app.add_exception_handler(IncorrectTokenFormatException, incorrect_token_handler)
     app.add_exception_handler(TokenExpiredException, expired_token_handler)
     app.add_exception_handler(NotAvailableRoomsException, room_fully_booked_handler)
+    app.add_exception_handler(RoomIsNotExistsException, room_is_not_exists_booked_handler)
 
