@@ -1,13 +1,12 @@
-import sqlalchemy
 from sqlalchemy.engine.row import RowMapping, Row
 
 
 from app.db.models.bookings import BookingModel
-from app.schemas.bookings import NewBookingSchema, BookingInfoSchema, UnbookedRoomsInfoSchema
+from app.schemas.bookings import BookingSchema, BookingInfoSchema
 
 
-def convert_db_model_to_new_booking_dto(booking: BookingModel) -> NewBookingSchema:
-    return NewBookingSchema(
+def convert_db_model_to_booking_dto(booking: BookingModel) -> BookingSchema:
+    return BookingSchema(
         room_id=booking.room_id,
         user_id=booking.user_id,
         date_from=booking.date_from,
@@ -33,10 +32,4 @@ def convert_db_model_to_booking_info_dto(booking_info: RowMapping) -> BookingInf
         services=booking_info.services
     )
 
-
-def convert_db_model_to_unbooked_rooms_info_dto(room: Row) -> UnbookedRoomsInfoSchema:
-    return UnbookedRoomsInfoSchema(
-        rooms_left_count=room.rooms_left_count,
-        price=room.price
-    )
 

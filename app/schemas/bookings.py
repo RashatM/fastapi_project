@@ -1,10 +1,9 @@
 from typing import Optional, List
-
 from pydantic import BaseModel
 from datetime import date
 
 
-class NewBookingSchema(BaseModel):
+class BookingSchema(BaseModel):
     room_id: int
     user_id: int
     date_from: date
@@ -14,7 +13,7 @@ class NewBookingSchema(BaseModel):
     total_days: int
 
 
-class NewBookingRequestSchema(BaseModel):
+class BookingRequestSchema(BaseModel):
     room_id: int
     date_from: date
     date_to: date
@@ -32,8 +31,3 @@ class BookingInfoSchema(BaseModel):
     name: str
     description: Optional[str]
     services: List[str]
-
-
-class UnbookedRoomsInfoSchema(BaseModel):
-    rooms_left_count: int
-    price: int

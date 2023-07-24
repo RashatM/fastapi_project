@@ -1,5 +1,5 @@
 from sqlalchemy import JSON, Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship, clear_mappers
+from sqlalchemy.orm import relationship
 
 from app.db.database import Base
 
@@ -17,4 +17,7 @@ class RoomModel(Base):
     image_id = Column(Integer)
 
     # hotel = relationship("HotelModel", back_populates="rooms")
-    # booking = relationship("BookingModel", "rooms")
+    booking = relationship("BookingModel", "rooms", primaryjoin="RoomModel.id == BookingModel.room_id")
+
+
+

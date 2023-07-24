@@ -16,6 +16,6 @@ class BookingModel(Base):
     total_cost = Column(Integer, Computed("(date_to - date_from) * price"))
     total_days = Column(Integer, Computed("date_to - date_from"))
 
-    # user = relationship("Users", back_populates="booking")
-    # rooms = relationship("RoomModel", back_populates="booking")
+    # user = relationship("UserModel", back_populates="booking")
+    rooms = relationship("RoomModel", back_populates="booking", primaryjoin=" BookingModel.room_id == RoomModel.id")
 

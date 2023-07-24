@@ -20,3 +20,8 @@ def encrypt_provider():
 
 def booking_repository_provider():
     raise NotImplementedError
+
+
+def room_repository_provider():
+    raise NotImplementedError
+

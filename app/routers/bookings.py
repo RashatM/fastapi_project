@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, status
 from app.dependencies.bookings import get_booking_service
 from app.dependencies.users import get_current_user
 from app.schemas.auth import UserPrivateSchema
-from app.schemas.bookings import NewBookingRequestSchema, NewBookingSchema, BookingInfoSchema
+from app.schemas.bookings import BookingRequestSchema, BookingSchema, BookingInfoSchema
 from app.services.bookings import BookingService
 
 booking_router = APIRouter(
@@ -25,10 +25,10 @@ async def get_bookings(
 
 @booking_router.post("", status_code=status.HTTP_201_CREATED)
 async def add_booking(
-    booking_data: NewBookingRequestSchema,
+    booking_data: BookingRequestSchema,
     user: UserPrivateSchema = Depends(get_current_user),
     service: BookingService = Depends(get_booking_service)
-) -> NewBookingSchema:
+) -> BookingSchema:
     booking = await service.add_new_booking(
         user_id=user.id,
         room_id=booking_data.room_id,
