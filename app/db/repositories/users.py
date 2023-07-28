@@ -12,7 +12,7 @@ from app.schemas.auth import UserPublicSchema, UserPrivateSchema
 
 class UserRepository(BaseRepository):
 
-    async def get_user_by_email(self, email: EmailStr) -> Optional[UserPublicSchema]:
+    async def find_user_by_email(self, email: EmailStr) -> Optional[UserPublicSchema]:
         query = select(UserModel.__table__.columns).filter(UserModel.email == email)
         result = await self._session.execute(query)
         user: Optional[UserModel] = result.one_or_none()
@@ -21,8 +21,8 @@ class UserRepository(BaseRepository):
             return convert_db_model_to_user_dto(user)
         return None
 
-    async def get_exist_user(self, email: EmailStr) -> Optional[UserPublicSchema]:
-        return await self.get_user_by_email(email=email)
+    async def find_exist_user(self, email: EmailStr) -> Optional[UserPublicSchema]:
+        return await self.find_user_by_email(email=email)
 
     async def get_user_by_id(self, _id: int) -> Optional[UserPrivateSchema]:
         query = (

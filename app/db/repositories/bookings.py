@@ -31,10 +31,13 @@ class BookingRepository(BaseRepository):
             .where(BookingModel.user_id == user_id)
         )
         result = await self._session.execute(query)
-        data = result.mappings().all()
-        return [convert_db_model_to_booking_info_dto(booking_info) for booking_info in data]
+        bookings = result.mappings().all()
 
-    async def get_exist_booking(
+        if bookings:
+            return [convert_db_model_to_booking_info_dto(booking_info) for booking_info in bookings]
+        return []
+
+    async def find_exist_booking(
             self,
             room_id: int,
             date_from: date,

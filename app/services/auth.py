@@ -23,7 +23,7 @@ class AuthenticationService:
         self.encrypt_adapter = encrypt_adapter
 
     async def register_new_user(self, user_data: UserPublicSchema) -> UserPrivateSchema:
-        if await self.user_repository.get_exist_user(user_data.email):
+        if await self.user_repository.find_exist_user(user_data.email):
             raise UserAlreadyExistsException
 
         hashed_password = self.encrypt_adapter.get_password_hash(user_data.password)
@@ -36,7 +36,7 @@ class AuthenticationService:
         return new_user
 
     async def authenticate_user(self, email: EmailStr, password: str) -> UserPublicSchema:
-        user = await self.user_repository.get_exist_user(email=email)
+        user = await self.user_repository.find_exist_user(email=email)
         if not (user and self.encrypt_adapter.verify_password(password, user.hashed_password)):
             raise UserIsNotAuthorizedException
         return user

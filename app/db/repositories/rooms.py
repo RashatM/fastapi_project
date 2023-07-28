@@ -9,7 +9,7 @@ from app.schemas.rooms import RoomSchema
 
 class RoomRepository(BaseRepository):
 
-    async def get_exist_room(self, room_id: int) -> Optional[RoomSchema]:
+    async def find_exist_room(self, room_id: int) -> Optional[RoomSchema]:
         query = select(RoomModel).filter(RoomModel.id == room_id)
         exist_room = await self._session.scalar(query)
 

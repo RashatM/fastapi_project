@@ -25,3 +25,7 @@ def booking_repository_provider():
 def room_repository_provider():
     raise NotImplementedError
 
+
+def hotel_repository_provider():
+    raise NotImplementedError
+

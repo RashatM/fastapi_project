@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import BaseModel
 
 
@@ -7,7 +9,7 @@ class RoomSchema(BaseModel):
     name: str
     description: str
     price: int
-    services: dict
+    services: List[str]
     quantity: int
     image_id: int
 

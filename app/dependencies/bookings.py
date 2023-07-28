@@ -17,4 +17,8 @@ def get_booking_service(
         booking_repository: BookingRepository = Depends(booking_repository_provider),
         room_repository: RoomRepository = Depends(room_repository_provider)
 ) -> BookingService:
-    return BookingService(uow=uow, booking_repository=booking_repository, room_repository=room_repository)
+    return BookingService(
+        uow=uow,
+        booking_repository=booking_repository,
+        room_repository=room_repository
+    )
