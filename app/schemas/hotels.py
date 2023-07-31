@@ -13,3 +13,4 @@ class HotelSchema(BaseModel):
 
 class HotelInfoSchema(HotelSchema):
     rooms_left_count: int
+

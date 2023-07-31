@@ -13,3 +13,11 @@ class RoomSchema(BaseModel):
     quantity: int
     image_id: int
 
+
+class RoomInfoSchema(RoomSchema):
+    total_cost: int
+    rooms_left_count: int
+
+
+
+
