@@ -8,6 +8,7 @@ from app.exceptions.booking_exceptions import NotExistsBookingsByUserException
 from app.exceptions.room_exceptions import RoomIsNotExistsException, NotAvailableRoomsException
 from app.schemas.bookings import BookingSchema, BookingInfoSchema
 from app.schemas.rooms import RoomSchema
+from app.utils.booking_dates_validators import validate_filter_dates, validate_booking_dates
 
 
 class BookingService:
@@ -35,6 +36,9 @@ class BookingService:
             date_from: date,
             date_to: date
     ) -> BookingSchema:
+
+        validate_filter_dates(date_from, date_to)
+        validate_booking_dates(date_from, date_to)
 
         exist_room: RoomSchema = await self.room_repository.find_exist_room(room_id=room_id)
 

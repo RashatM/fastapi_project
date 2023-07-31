@@ -7,6 +7,7 @@ from app.db.unit_of_work.uow import UnitOfWork
 from app.exceptions.hotel_exceptions import HotelIsNotExistsException
 from app.schemas.hotels import HotelSchema
 from app.schemas.rooms import RoomInfoSchema
+from app.utils.booking_dates_validators import validate_filter_dates
 
 
 class RoomService:
@@ -27,6 +28,8 @@ class RoomService:
         date_from: date,
         date_to: date
     ) -> List[RoomInfoSchema]:
+        validate_filter_dates(date_from, date_to)
+
         exist_hotel: Optional[HotelSchema] = await self.hotel_repository.find_hotel_by_id(hotel_id=hotel_id)
 
         if not exist_hotel:
