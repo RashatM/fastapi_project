@@ -17,7 +17,5 @@ class RoomModel(Base):
     image_id = Column(Integer)
 
     hotel = relationship("HotelModel", back_populates="rooms")
-    booking = relationship("BookingModel", "rooms", primaryjoin="RoomModel.id == BookingModel.room_id")
-
-
+    booking = relationship("BookingModel", back_populates="rooms", primaryjoin="BookingModel.room_id == RoomModel.id")
 

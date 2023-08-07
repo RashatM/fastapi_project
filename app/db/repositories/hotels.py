@@ -28,33 +28,26 @@ class HotelRepository(BaseRepository):
         date_to: date
     ) -> List[HotelInfoSchema]:
 
-        booked_rooms = (
-            select(BookingModel.room_id)
-            .where(
-                and_(
-                    BookingModel.date_from <= date_to,
-                    BookingModel.date_to >= date_from
+        available_rooms = (
+            select(RoomModel.hotel_id, func.count(RoomModel.id).label("rooms_left_count"))
+            .filter(
+                ~RoomModel.booking.any(
+                    and_(
+                        BookingModel.date_from <= date_to,
+                        BookingModel.date_to >= date_from
+                    )
                 )
             )
-            .cte("booked_rooms")
-        )
-
-        free_rooms = (
-            select(RoomModel.hotel_id, func.count(RoomModel.id).label("rooms_left_count"))
-            .select_from(RoomModel)
-            .join(booked_rooms, booked_rooms.c.room_id == RoomModel.id, isouter=True)
-            .where(booked_rooms.c.room_id.is_(None))
             .group_by(RoomModel.hotel_id)
-            .cte("free_rooms")
+            .cte("available_rooms")
         )
 
+        # Получаем отели с доступными комнатами и количеством оставшихся комнат
         hotels_with_free_rooms_query = (
-            select(
-                HotelModel.__table__.columns,
-                free_rooms.c.rooms_left_count
-            )
-            .join(free_rooms, free_rooms.c.hotel_id == HotelModel.id)
-            .where(func.lower(HotelModel.location).like(f"%{location.lower()}%"))
+            select(HotelModel.__table__.columns, available_rooms.c.rooms_left_count)
+            .select_from(HotelModel)
+            .join(available_rooms, available_rooms.c.hotel_id == HotelModel.id) 
+            .filter(HotelModel.location.like(f"%{location}%"))
         )
 
         result = await self._session.execute(hotels_with_free_rooms_query)

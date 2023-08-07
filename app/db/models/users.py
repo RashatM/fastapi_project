@@ -11,7 +11,7 @@ class UserModel(Base):
     email = Column(String, nullable=False)
     hashed_password = Column(String, nullable=False)
 
-    # booking = relationship("BookingModel", back_populates="user")
+    booking = relationship("BookingModel", back_populates="user")
 
 
 
