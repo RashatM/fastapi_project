@@ -1,5 +1,7 @@
-from sqlalchemy import Column, String, Integer
-from sqlalchemy.orm import relationship
+from typing import List
+
+from sqlalchemy import String
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from app.db.database import Base
 
@@ -7,11 +9,11 @@ from app.db.database import Base
 class UserModel(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True)
-    email = Column(String, nullable=False)
-    hashed_password = Column(String, nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    email: Mapped[str] = mapped_column(String, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(nullable=False)
 
-    booking = relationship("BookingModel", back_populates="user")
+    booking: Mapped[List["BookingModel"]] = relationship(back_populates="user")
 
 
 
