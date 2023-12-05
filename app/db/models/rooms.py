@@ -10,7 +10,7 @@ class RoomModel(Base):
     __tablename__ = "rooms"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    hotel_id: Mapped[str] = mapped_column(ForeignKey("hotels.id"))
+    hotel_id: Mapped[int] = mapped_column(ForeignKey("hotels.id"))
     name: Mapped[str]
     description: Mapped[Optional[str]]
     price: Mapped[int]
@@ -18,6 +18,6 @@ class RoomModel(Base):
     quantity: Mapped[int]
     image_id: Mapped[int]
 
-    hotel: Mapped[str] = relationship(back_populates="rooms")
-    booking: Mapped[str] = relationship(back_populates="rooms", primaryjoin="BookingModel.room_id == RoomModel.id")
+    hotel: Mapped["HotelModel"] = relationship(back_populates="rooms")
+    booking: Mapped["BookingModel"] = relationship(back_populates="rooms", primaryjoin="BookingModel.room_id == RoomModel.id")
 

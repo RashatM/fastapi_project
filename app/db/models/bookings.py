@@ -18,4 +18,4 @@ class BookingModel(Base):
     total_days: Mapped[int] = mapped_column(Computed("date_to - date_from"))
 
     user: Mapped["UserModel"] = relationship(back_populates="booking")
-    rooms: Mapped["RoomModel"] = relationship(back_populates="booking", primaryjoin=" BookingModel.room_id == RoomModel.id")
+    rooms: Mapped["RoomModel"] = relationship(back_populates="booking", primaryjoin="BookingModel.room_id == RoomModel.id")
