@@ -19,7 +19,6 @@ class RoomRepository(BaseRepository):
 
         if exist_room:
             return convert_db_model_to_room_dto(room=exist_room)
-        return None
 
     async def find_all_rooms_by_hotel_and_date(
         self,

@@ -4,30 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cf37022a-d224-42b5-a81f-f6d9e60290e3" name="Changes" comment="add unit_of_work, exception_handlers and auth">
-      <change afterPath="$PROJECT_DIR$/app/adapters/encrypt_adapter.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dependencies/stub.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/providers/auth_provider.py" afterDir="false" />
+    <list default="true" id="cf37022a-d224-42b5-a81f-f6d9e60290e3" name="Changes" comment="optimize sql-queries">
+      <change afterPath="$PROJECT_DIR$/app/services/users.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backlog" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/auth/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/adapters/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/auth/auth.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dependencies/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dependencies/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dependencies/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dependencies/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/exceptions/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/exceptions/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/exceptions/error_handlers/handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/exceptions/error_handlers/handlers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/providers/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/providers/db_provider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/repositories/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/repositories/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/repositories/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/repositories/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/db/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/db/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/db/repositories/bookings.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/db/repositories/bookings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/db/repositories/hotels.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/db/repositories/hotels.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/db/repositories/rooms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/db/repositories/rooms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/db/repositories/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/db/repositories/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/exceptions/app_exception.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/exceptions/app_exception.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/providers/db_provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/providers/db_provider.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routers/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/users.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/base.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/unit_of_work/uow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/unit_of_work/uow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,15 +53,19 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/alfa/PycharmProjects/fastapi_project/app/services&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+    &quot;last_opened_file_path&quot;: &quot;/Users/alfa/PycharmProjects/fastapi_project/app/schemas&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   },
   &quot;keyToStringList&quot;: {
+    &quot;ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;
+    ],
     &quot;DatabaseDriversLRU&quot;: [
       &quot;postgresql&quot;
     ]
@@ -79,18 +73,18 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/services" />
       <recent name="$PROJECT_DIR$/app/schemas" />
+      <recent name="$PROJECT_DIR$/app/services" />
+      <recent name="$PROJECT_DIR$/app/db/repositories" />
       <recent name="$PROJECT_DIR$/app/routers" />
       <recent name="$PROJECT_DIR$/app/auth" />
-      <recent name="$PROJECT_DIR$/app/dao" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/db" />
+      <recent name="$PROJECT_DIR$/app/db/repositories/converters" />
       <recent name="$PROJECT_DIR$/app/exceptions/error_handlers" />
       <recent name="$PROJECT_DIR$/app/routers" />
       <recent name="$PROJECT_DIR$/app/models" />
-      <recent name="$PROJECT_DIR$/app/auth" />
-      <recent name="$PROJECT_DIR$/app/schemas" />
     </key>
   </component>
   <component name="RunManager">
@@ -118,6 +112,9 @@
     </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="cf37022a-d224-42b5-a81f-f6d9e60290e3" name="Changes" comment="" />
@@ -175,7 +172,77 @@
       <option name="project" value="LOCAL" />
       <updated>1687248549046</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add auth_provider, auth_service, encrypt_adapter. Change UoW -&gt; remove repos from UoW">
+      <created>1689349164971</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1689349164971</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add auth_provider, auth_service, encrypt_adapter. Change UoW -&gt; remove repos from UoW">
+      <created>1689349210545</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1689349210545</updated>
+    </task>
+    <task id="LOCAL-00008" summary="finish auth_provider, auth_service, auth_routers">
+      <created>1689617830304</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1689617830304</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add bookings_router, converters, booking_repo, booking_service">
+      <created>1689798235668</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1689798235668</updated>
+    </task>
+    <task id="LOCAL-00010" summary="add delete, create, get in booking router, optimize finding rooms left count">
+      <created>1689975608877</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1689975608877</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add room_repo, room_service">
+      <created>1690216927825</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1690216927825</updated>
+    </task>
+    <task id="LOCAL-00012" summary="add hotel service, repo, endpoints,excepts">
+      <created>1690581936362</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1690581936362</updated>
+    </task>
+    <task id="LOCAL-00013" summary="add room service, repo, endpoints,excepts">
+      <created>1690798150397</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1690798150397</updated>
+    </task>
+    <task id="LOCAL-00014" summary="add booking_dates_validators">
+      <created>1690813185247</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1690813185247</updated>
+    </task>
+    <task id="LOCAL-00015" summary="optimize sql-queries">
+      <created>1691411466939</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1691411466939</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,7 +263,16 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="add hotel, bookings, rooms, and users models" />
     <MESSAGE value="add unit_of_work, exception_handlers and auth" />
-    <option name="LAST_COMMIT_MESSAGE" value="add unit_of_work, exception_handlers and auth" />
+    <MESSAGE value="add auth_provider, auth_service, encrypt_adapter. Change UoW -&gt; remove repos from UoW" />
+    <MESSAGE value="finish auth_provider, auth_service, auth_routers" />
+    <MESSAGE value="add bookings_router, converters, booking_repo, booking_service" />
+    <MESSAGE value="add delete, create, get in booking router, optimize finding rooms left count" />
+    <MESSAGE value="add room_repo, room_service" />
+    <MESSAGE value="add hotel service, repo, endpoints,excepts" />
+    <MESSAGE value="add room service, repo, endpoints,excepts" />
+    <MESSAGE value="add booking_dates_validators" />
+    <MESSAGE value="optimize sql-queries" />
+    <option name="LAST_COMMIT_MESSAGE" value="optimize sql-queries" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/fastapi_project$main.coverage" NAME="main Coverage Results" MODIFIED="1684776477390" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

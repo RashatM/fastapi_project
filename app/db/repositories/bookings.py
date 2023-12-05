@@ -31,7 +31,7 @@ class BookingRepository(BaseRepository):
             .where(BookingModel.user_id == user_id)
         )
         result = await self._session.execute(query)
-        bookings = result.mappings().all()
+        bookings = result.all()
 
         if bookings:
             return [convert_db_model_to_booking_info_dto(booking_info) for booking_info in bookings]
@@ -43,7 +43,6 @@ class BookingRepository(BaseRepository):
             date_from: date,
             date_to: date
     ) -> Optional[BookingSchema]:
-
         booked_rooms_query = (
             select(BookingModel)
             .where(
@@ -62,7 +61,6 @@ class BookingRepository(BaseRepository):
         
         if booked_room:
             return convert_db_model_to_booking_dto(booked_room)
-        return None
 
     async def add_booking(
             self,

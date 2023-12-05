@@ -19,7 +19,6 @@ class HotelRepository(BaseRepository):
 
         if hotel:
             return convert_db_model_to_hotel_dto(hotel=hotel)
-        return None
 
     async def find_all_hotels_by_location_and_date(
         self,
@@ -51,7 +50,7 @@ class HotelRepository(BaseRepository):
         )
 
         result = await self._session.execute(hotels_with_free_rooms_query)
-        hotels = result.mappings().all()
+        hotels = result.all()
 
         if hotels:
             return [convert_db_model_to_hotel_info_dto(hotel_info) for hotel_info in hotels]

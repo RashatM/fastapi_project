@@ -1,4 +1,4 @@
-from sqlalchemy import RowMapping
+from sqlalchemy import Row
 
 from app.db.models.hotels import HotelModel
 from app.schemas.hotels import HotelSchema, HotelInfoSchema
@@ -15,7 +15,7 @@ def convert_db_model_to_hotel_dto(hotel: HotelModel) -> HotelSchema:
     )
 
 
-def convert_db_model_to_hotel_info_dto(hotel_info: RowMapping) -> HotelInfoSchema:
+def convert_db_model_to_hotel_info_dto(hotel_info: Row) -> HotelInfoSchema:
     return HotelInfoSchema(
         id=hotel_info.id,
         name=hotel_info.name,

@@ -1,4 +1,4 @@
-from sqlalchemy.engine.row import RowMapping, Row
+from sqlalchemy.engine.row import Row
 
 
 from app.db.models.bookings import BookingModel
@@ -17,7 +17,7 @@ def convert_db_model_to_booking_dto(booking: BookingModel) -> BookingSchema:
     )
 
 
-def convert_db_model_to_booking_info_dto(booking_info: RowMapping) -> BookingInfoSchema:
+def convert_db_model_to_booking_info_dto(booking_info: Row) -> BookingInfoSchema:
     return BookingInfoSchema(
         room_id=booking_info.room_id,
         user_id=booking_info.user_id,

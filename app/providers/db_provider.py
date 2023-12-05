@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 
+
 class DBProvider:
     def __init__(self, pool: async_sessionmaker):
         self.pool = pool

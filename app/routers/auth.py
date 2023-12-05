@@ -25,7 +25,7 @@ async def register_user(
     user_data: UserRequestSchema,
     service: AuthenticationService = Depends(get_auth_service)
 ) -> UserPrivateSchema:
-    return await service.register_new_user(user_data)
+    return await service.register_new_user(email=user_data.email, password=user_data.password)
 
 
 @auth_router.post("/login")
