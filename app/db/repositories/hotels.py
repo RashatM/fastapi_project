@@ -7,12 +7,12 @@ from app.db.models.bookings import BookingModel
 from app.db.models.hotels import HotelModel
 from app.db.models.rooms import RoomModel
 from app.db.repositories.base import BaseRepository
-from app.schemas.hotels import HotelSchema, HotelInfoSchema
+from app.dto.hotels import HotelDTO, HotelInfoDTO
 
 
 class HotelRepository(BaseRepository):
 
-    async def find_hotel_by_id(self, hotel_id: int) -> Optional[HotelSchema]:
+    async def find_hotel_by_id(self, hotel_id: int) -> Optional[HotelDTO]:
         query = select(HotelModel).filter(HotelModel.id == hotel_id)
         result = await self._session.execute(query)
         hotel: Optional[HotelModel] = result.scalar_one_or_none()
@@ -25,12 +25,12 @@ class HotelRepository(BaseRepository):
         location: str,
         date_from: date,
         date_to: date
-    ) -> List[HotelInfoSchema]:
+    ) -> List[HotelInfoDTO]:
 
         available_rooms = (
             select(RoomModel.hotel_id, func.count(RoomModel.id).label("rooms_left_count"))
             .filter(
-                ~RoomModel.booking.any(
+                ~RoomModel.booking.has(
                     and_(
                         BookingModel.date_from <= date_to,
                         BookingModel.date_to >= date_from

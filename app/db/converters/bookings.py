@@ -2,11 +2,11 @@ from sqlalchemy.engine.row import Row
 
 
 from app.db.models.bookings import BookingModel
-from app.schemas.bookings import BookingSchema, BookingInfoSchema
+from app.dto.bookings import BookingDTO, BookingInfoDTO
 
 
-def convert_db_model_to_booking_dto(booking: BookingModel) -> BookingSchema:
-    return BookingSchema(
+def convert_db_model_to_booking_dto(booking: BookingModel) -> BookingDTO:
+    return BookingDTO(
         room_id=booking.room_id,
         user_id=booking.user_id,
         date_from=booking.date_from,
@@ -17,8 +17,8 @@ def convert_db_model_to_booking_dto(booking: BookingModel) -> BookingSchema:
     )
 
 
-def convert_db_model_to_booking_info_dto(booking_info: Row) -> BookingInfoSchema:
-    return BookingInfoSchema(
+def convert_db_model_to_booking_info_dto(booking_info: Row) -> BookingInfoDTO:
+    return BookingInfoDTO(
         room_id=booking_info.room_id,
         user_id=booking_info.user_id,
         date_from=booking_info.date_from,

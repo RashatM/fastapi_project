@@ -8,12 +8,12 @@ from app.db.models.bookings import BookingModel
 from app.db.models.hotels import HotelModel
 from app.db.models.rooms import RoomModel
 from app.db.repositories.base import BaseRepository
-from app.schemas.rooms import RoomSchema, RoomInfoSchema
+from app.dto.rooms import RoomDTO, RoomInfoDTO
 
 
 class RoomRepository(BaseRepository):
 
-    async def find_exist_room(self, room_id: int) -> Optional[RoomSchema]:
+    async def find_exist_room(self, room_id: int) -> Optional[RoomDTO]:
         query = select(RoomModel).filter(RoomModel.id == room_id)
         exist_room = await self._session.scalar(query)
 
@@ -25,7 +25,7 @@ class RoomRepository(BaseRepository):
         hotel_id: int,
         date_from: date,
         date_to: date
-    ) -> List[RoomInfoSchema]:
+    ) -> List[RoomInfoDTO]:
 
         booked_rooms = (
             select(BookingModel.room_id, func.count(BookingModel.room_id).label("rooms_booked_count"))

@@ -2,7 +2,7 @@ from typing import List
 from pydantic import BaseModel
 
 
-class HotelSchema(BaseModel):
+class HotelDTO(BaseModel):
     id: int
     name: str
     location: str
@@ -11,6 +11,6 @@ class HotelSchema(BaseModel):
     image_id: int
 
 
-class HotelInfoSchema(HotelSchema):
+class HotelInfoDTO(HotelDTO):
     rooms_left_count: int
 

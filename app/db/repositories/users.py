@@ -6,12 +6,12 @@ from sqlalchemy.orm import load_only
 from app.db.converters.auth import convert_db_model_to_user_dto, convert_db_model_to_private_user_dto
 from app.db.repositories.base import BaseRepository
 from app.db.models.users import UserModel
-from app.schemas.auth import UserPublicSchema, UserPrivateSchema
+from app.dto.auth import UserPublicDTO, UserPrivateDTO
 
 
 class UserRepository(BaseRepository):
 
-    async def find_user_by_email(self, email: EmailStr) -> Optional[UserPublicSchema]:
+    async def find_user_by_email(self, email: EmailStr) -> Optional[UserPublicDTO]:
         query = select(UserModel.__table__.columns).filter(UserModel.email == email)
         result = await self._session.execute(query)
         user: Optional[UserModel] = result.one_or_none()
@@ -19,7 +19,7 @@ class UserRepository(BaseRepository):
         if user:
             return convert_db_model_to_user_dto(user)
 
-    async def find_user_by_id(self, _id: int) -> Optional[UserPrivateSchema]:
+    async def find_user_by_id(self, _id: int) -> Optional[UserPrivateDTO]:
         query = (
             select(UserModel)
             .options(load_only(UserModel.id, UserModel.email))
@@ -31,7 +31,7 @@ class UserRepository(BaseRepository):
         if user:
             return convert_db_model_to_private_user_dto(user)
 
-    async def add_new_user(self, email: EmailStr, hashed_password: str) -> UserPrivateSchema:
+    async def add_new_user(self, email: EmailStr, hashed_password: str) -> UserPrivateDTO:
         new_user = UserModel(
             email=email,
             hashed_password=hashed_password

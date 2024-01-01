@@ -1,11 +1,11 @@
 from sqlalchemy import Row
 
 from app.db.models.hotels import HotelModel
-from app.schemas.hotels import HotelSchema, HotelInfoSchema
+from app.dto.hotels import HotelDTO, HotelInfoDTO
 
 
-def convert_db_model_to_hotel_dto(hotel: HotelModel) -> HotelSchema:
-    return HotelSchema(
+def convert_db_model_to_hotel_dto(hotel: HotelModel) -> HotelDTO:
+    return HotelDTO(
         id=hotel.id,
         name=hotel.name,
         location=hotel.location,
@@ -15,8 +15,8 @@ def convert_db_model_to_hotel_dto(hotel: HotelModel) -> HotelSchema:
     )
 
 
-def convert_db_model_to_hotel_info_dto(hotel_info: Row) -> HotelInfoSchema:
-    return HotelInfoSchema(
+def convert_db_model_to_hotel_info_dto(hotel_info: Row) -> HotelInfoDTO:
+    return HotelInfoDTO(
         id=hotel_info.id,
         name=hotel_info.name,
         location=hotel_info.location,

@@ -3,7 +3,7 @@ from typing import List
 from pydantic import BaseModel
 
 
-class RoomSchema(BaseModel):
+class RoomDTO(BaseModel):
     id: int
     hotel_id: int
     name: str
@@ -14,7 +14,7 @@ class RoomSchema(BaseModel):
     image_id: int
 
 
-class RoomInfoSchema(RoomSchema):
+class RoomInfoDTO(RoomDTO):
     total_cost: int
     rooms_left_count: int
 

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class BaseUnitOfWork(ABC):
+class IUnitOfWork(ABC):
 
     @abstractmethod
     def commit(self) -> None:

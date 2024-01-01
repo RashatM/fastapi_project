@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db.unit_of_work.base_uow import BaseUnitOfWork
+from app.db.unit_of_work.base_uow import IUnitOfWork
 
 
-class UnitOfWork(BaseUnitOfWork):
+class UnitOfWork(IUnitOfWork):
 
     def __init__(self, session: AsyncSession):
         self._session = session

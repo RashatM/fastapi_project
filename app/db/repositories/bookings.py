@@ -7,12 +7,12 @@ from app.db.converters.bookings import convert_db_model_to_booking_dto, convert_
 from app.db.models.rooms import RoomModel
 from app.db.repositories.base import BaseRepository
 from app.db.models.bookings import BookingModel
-from app.schemas.bookings import BookingSchema, BookingInfoSchema
+from app.dto.bookings import BookingDTO, BookingInfoDTO
 
 
 class BookingRepository(BaseRepository):
 
-    async def find_bookings_by_user_id(self, user_id: int) -> List[BookingInfoSchema]:
+    async def find_bookings_by_user_id(self, user_id: int) -> List[BookingInfoDTO]:
         query = (
             select(
                 BookingModel.room_id,
@@ -42,7 +42,7 @@ class BookingRepository(BaseRepository):
             room_id: int,
             date_from: date,
             date_to: date
-    ) -> Optional[BookingSchema]:
+    ) -> Optional[BookingDTO]:
         booked_rooms_query = (
             select(BookingModel)
             .where(
@@ -69,7 +69,7 @@ class BookingRepository(BaseRepository):
             date_from: date,
             date_to: date,
             price: int
-    ) -> BookingSchema:
+    ) -> BookingDTO:
         new_booking = BookingModel(
             room_id=room_id,
             user_id=user_id,

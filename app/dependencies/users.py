@@ -10,7 +10,7 @@ from app.dependencies.stubs import session_provider, uow_provider, user_reposito
 from app.exceptions.auth_exceptions import TokenAbsentException
 from app.providers.auth_provider import AuthenticationProvider
 from app.db.repositories.users import UserRepository
-from app.schemas.auth import UserPrivateSchema
+from app.dto.auth import UserPrivateDTO
 from app.services.auth import AuthenticationService
 from app.db.unit_of_work.uow import UnitOfWork
 
@@ -43,5 +43,5 @@ def get_token(request: Request) -> str:
 async def get_current_user(
     token: str = Depends(get_token),
     auth_service: AuthenticationService = Depends(get_auth_service)
-) -> Optional[UserPrivateSchema]:
+) -> Optional[UserPrivateDTO]:
     return await auth_service.verify_token(token=token)

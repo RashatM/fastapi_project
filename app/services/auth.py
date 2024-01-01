@@ -5,7 +5,7 @@ from app.exceptions.auth_exceptions import UserAlreadyExistsException, UserIsNot
     UserIsNotExistsException
 from app.providers.auth_provider import AuthenticationProvider
 from app.db.repositories.users import UserRepository
-from app.schemas.auth import UserPublicSchema, Token, UserPrivateSchema
+from app.dto.auth import UserPublicDTO, TokenDTO, UserPrivateDTO
 from app.db.unit_of_work.uow import UnitOfWork
 
 
@@ -23,7 +23,7 @@ class AuthenticationService:
         self.auth_provider = auth_provider
         self.encrypt_adapter = encrypt_adapter
 
-    async def register_new_user(self, email: EmailStr, password: str) -> UserPrivateSchema:
+    async def register_new_user(self, email: EmailStr, password: str) -> UserPrivateDTO:
         if await self.user_repository.find_user_by_email(email):
             raise UserAlreadyExistsException
 
@@ -36,19 +36,19 @@ class AuthenticationService:
         await self.uow.commit()
         return new_user
 
-    async def authenticate_user(self, email: EmailStr, password: str) -> UserPublicSchema:
+    async def authenticate_user(self, email: EmailStr, password: str) -> UserPublicDTO:
         user = await self.user_repository.find_user_by_email(email=email)
         if not (user and self.encrypt_adapter.verify_password(password, user.hashed_password)):
             raise UserIsNotAuthorizedException
         return user
 
-    async def login_user(self, email: EmailStr, password: str) -> Token:
+    async def login_user(self, email: EmailStr, password: str) -> TokenDTO:
         user = await self.authenticate_user(email=email, password=password)
         access_token = self.auth_provider.create_user_token(user.id)
 
-        return Token(access_token=access_token)
+        return TokenDTO(access_token=access_token)
 
-    async def verify_token(self, token: str) -> UserPrivateSchema:
+    async def verify_token(self, token: str) -> UserPrivateDTO:
         user_id = self.auth_provider.get_token_sub(token)
         user = await self.user_repository.find_user_by_id(user_id)
         if not user:

@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, Response, status
-
+from pydantic import EmailStr
 
 from app.dependencies.users import get_auth_service, get_current_user
 from app.exceptions.auth_exceptions import UserAlreadyExistsException
 from app.exceptions.error_handlers.error_result import ErrorResult
 from app.services.auth import AuthenticationService
-from app.schemas.auth import UserRequestSchema, UserPublicSchema, Token, UserPrivateSchema, UserRequestSchema
+from app.dto.auth import TokenDTO, UserPrivateDTO
 
 auth_router = APIRouter(
     prefix="/auth",
@@ -22,19 +22,21 @@ auth_router = APIRouter(
     },
     status_code=status.HTTP_201_CREATED)
 async def register_user(
-    user_data: UserRequestSchema,
+    email: EmailStr,
+    password: str,
     service: AuthenticationService = Depends(get_auth_service)
-) -> UserPrivateSchema:
-    return await service.register_new_user(email=user_data.email, password=user_data.password)
+) -> UserPrivateDTO:
+    return await service.register_new_user(email=email, password=password)
 
 
 @auth_router.post("/login")
 async def login_user(
     response: Response,
-    user_data: UserRequestSchema,
+    email: EmailStr,
+    password: str,
     service: AuthenticationService = Depends(get_auth_service)
-) -> Token:
-    token = await service.login_user(user_data.email, user_data.password)
+) -> TokenDTO:
+    token = await service.login_user(email, password)
     response.set_cookie("booking_access_token", token.access_token, httponly=True)
     return token
 
@@ -45,7 +47,7 @@ async def logout(response: Response):
 
 
 @auth_router.get("/me")
-async def read_user_me(current_user: UserPrivateSchema = Depends(get_current_user)) -> UserPrivateSchema:
+async def read_user_me(current_user: UserPrivateDTO = Depends(get_current_user)) -> UserPrivateDTO:
     return current_user
 
 

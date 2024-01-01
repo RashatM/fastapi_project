@@ -1,11 +1,11 @@
 from sqlalchemy import RowMapping
 
 from app.db.models.rooms import RoomModel
-from app.schemas.rooms import RoomSchema, RoomInfoSchema
+from app.dto.rooms import RoomDTO, RoomInfoDTO
 
 
-def convert_db_model_to_room_dto(room: RoomModel) -> RoomSchema:
-    return RoomSchema(
+def convert_db_model_to_room_dto(room: RoomModel) -> RoomDTO:
+    return RoomDTO(
         id=room.id,
         hotel_id=room.hotel_id,
         name=room.name,
@@ -17,8 +17,8 @@ def convert_db_model_to_room_dto(room: RoomModel) -> RoomSchema:
     )
 
 
-def convert_db_model_to_room_info_dto(room: RowMapping) -> RoomInfoSchema:
-    return RoomInfoSchema(
+def convert_db_model_to_room_info_dto(room: RowMapping) -> RoomInfoDTO:
+    return RoomInfoDTO(
         id=room.id,
         hotel_id=room.hotel_id,
         name=room.name,
