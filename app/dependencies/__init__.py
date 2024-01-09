@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from sqlalchemy.ext.asyncio import async_sessionmaker
+from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession, AsyncEngine
 
 from app.adapters.auth_adapter import AuthenticationAdapter
 from app.adapters.encrypt_adapter import EncryptionAdapter
