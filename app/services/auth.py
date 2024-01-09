@@ -1,22 +1,23 @@
 from pydantic import EmailStr
 
-from app.adapters.encrypt_adapter import EncryptionAdapter
 from app.exceptions.auth_exceptions import UserAlreadyExistsException, UserIsNotAuthorizedException, \
     UserIsNotExistsException
-from app.providers.auth_provider import AuthenticationProvider
-from app.db.repositories.users import UserRepository
+from app.interfaces.adapters.encrypt_adapter import IEncryptionAdapter
+from app.interfaces.auth_provider import IAuthenticationProvider
+from app.interfaces.repositories.users import IUserRepository
+from app.interfaces.services.auth import IAuthenticationService
 from app.dto.auth import UserPublicDTO, TokenDTO, UserPrivateDTO
-from app.db.unit_of_work.uow import UnitOfWork
+from app.interfaces.uow import IUnitOfWork
 
 
-class AuthenticationService:
+class AuthenticationService(IAuthenticationService):
 
     def __init__(
         self,
-        uow: UnitOfWork,
-        user_repository: UserRepository,
-        auth_provider: AuthenticationProvider,
-        encrypt_adapter: EncryptionAdapter
+        uow: IUnitOfWork,
+        user_repository: IUserRepository,
+        auth_provider: IAuthenticationProvider,
+        encrypt_adapter: IEncryptionAdapter
     ):
         self.uow = uow
         self.user_repository = user_repository

@@ -1,16 +1,18 @@
 from datetime import date
 from typing import Optional, List
 
-from app.db.repositories.hotels import HotelRepository
-from app.db.unit_of_work.uow import UnitOfWork
+
+from app.interfaces.repositories.hotels import IHotelRepository
+from app.interfaces.services.hotels import IHotelService
+from app.interfaces.uow import IUnitOfWork
 from app.exceptions.hotel_exceptions import HotelIsNotExistsException
 from app.dto.hotels import HotelDTO, HotelInfoDTO
 from app.utils.booking_dates_validators import validate_filter_dates
 
 
-class HotelService:
+class HotelService(IHotelService):
 
-    def __init__(self,  uow: UnitOfWork, hotel_repository: HotelRepository) -> None:
+    def __init__(self,  uow: IUnitOfWork, hotel_repository: IHotelRepository) -> None:
         self.uow = uow
         self.hotel_repository = hotel_repository
 

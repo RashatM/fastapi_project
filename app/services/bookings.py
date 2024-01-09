@@ -1,24 +1,25 @@
 from datetime import date
 from typing import List
 
-from app.db.repositories.rooms import RoomRepository
-from app.db.unit_of_work.uow import UnitOfWork
-from app.db.repositories.bookings import BookingRepository
+
 from app.exceptions.booking_exceptions import NotExistsBookingsByUserException
 from app.exceptions.room_exceptions import RoomIsNotExistsException, NotAvailableRoomsException
 from app.dto.bookings import BookingDTO, BookingInfoDTO
 from app.dto.rooms import RoomDTO
+from app.interfaces.repositories.bookings import IBookingRepository
+from app.interfaces.repositories.rooms import IRoomRepository
+from app.interfaces.services.bookings import IBookingService
+from app.interfaces.uow import IUnitOfWork
 from app.utils.booking_dates_validators import validate_filter_dates, validate_booking_dates
 
 
-
-class BookingService:
+class BookingService(IBookingService):
 
     def __init__(
         self,
-        uow: UnitOfWork,
-        booking_repository: BookingRepository,
-        room_repository: RoomRepository
+        uow: IUnitOfWork,
+        booking_repository: IBookingRepository,
+        room_repository: IRoomRepository
     ) -> None:
         self.uow = uow
         self.booking_repository = booking_repository

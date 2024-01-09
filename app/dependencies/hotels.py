@@ -2,8 +2,8 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.repositories.hotels import HotelRepository
+from app.db.uow import UnitOfWork
 from app.dependencies.stubs import uow_provider, session_provider, hotel_repository_provider
-from app.db.unit_of_work.uow import UnitOfWork
 from app.services.hotels import HotelService
 
 

@@ -8,9 +8,10 @@ from app.db.models.hotels import HotelModel
 from app.db.models.rooms import RoomModel
 from app.db.repositories.base import BaseRepository
 from app.dto.hotels import HotelDTO, HotelInfoDTO
+from app.interfaces.repositories.hotels import IHotelRepository
 
 
-class HotelRepository(BaseRepository):
+class HotelRepository(BaseRepository, IHotelRepository):
 
     async def find_hotel_by_id(self, hotel_id: int) -> Optional[HotelDTO]:
         query = select(HotelModel).filter(HotelModel.id == hotel_id)

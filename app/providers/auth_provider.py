@@ -6,9 +6,10 @@ from jose import jwt, JWTError, ExpiredSignatureError
 from app.config import settings
 from app.exceptions.auth_exceptions import IncorrectTokenFormatException, UserIsNotPresentException, \
     TokenExpiredException
+from app.interfaces.auth_provider import IAuthenticationProvider
 
 
-class AuthenticationProvider:
+class AuthenticationProvider(IAuthenticationProvider):
 
     @staticmethod
     def create_access_token(data: dict) -> str:

@@ -1,7 +1,9 @@
 from passlib.hash import bcrypt
 
+from app.interfaces.adapters.encrypt_adapter import IEncryptionAdapter
 
-class EncryptionAdapter:
+
+class EncryptionAdapter(IEncryptionAdapter):
 
     @staticmethod
     def get_password_hash(password: str) -> str:

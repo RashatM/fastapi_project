@@ -8,9 +8,10 @@ from app.db.models.rooms import RoomModel
 from app.db.repositories.base import BaseRepository
 from app.db.models.bookings import BookingModel
 from app.dto.bookings import BookingDTO, BookingInfoDTO
+from app.interfaces.repositories.bookings import IBookingRepository
 
 
-class BookingRepository(BaseRepository):
+class BookingRepository(BaseRepository, IBookingRepository):
 
     async def find_bookings_by_user_id(self, user_id: int) -> List[BookingInfoDTO]:
         query = (

@@ -7,9 +7,10 @@ from app.db.converters.auth import convert_db_model_to_user_dto, convert_db_mode
 from app.db.repositories.base import BaseRepository
 from app.db.models.users import UserModel
 from app.dto.auth import UserPublicDTO, UserPrivateDTO
+from app.interfaces.repositories.users import IUserRepository
 
 
-class UserRepository(BaseRepository):
+class UserRepository(BaseRepository, IUserRepository):
 
     async def find_user_by_email(self, email: EmailStr) -> Optional[UserPublicDTO]:
         query = select(UserModel.__table__.columns).filter(UserModel.email == email)

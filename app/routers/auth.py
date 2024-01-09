@@ -4,7 +4,7 @@ from pydantic import EmailStr
 from app.dependencies.users import get_auth_service, get_current_user
 from app.exceptions.auth_exceptions import UserAlreadyExistsException
 from app.exceptions.error_handlers.error_result import ErrorResult
-from app.services.auth import AuthenticationService
+from app.interfaces.services.auth import IAuthenticationService
 from app.dto.auth import TokenDTO, UserPrivateDTO
 
 auth_router = APIRouter(
@@ -24,7 +24,7 @@ auth_router = APIRouter(
 async def register_user(
     email: EmailStr,
     password: str,
-    service: AuthenticationService = Depends(get_auth_service)
+    service: IAuthenticationService = Depends(get_auth_service)
 ) -> UserPrivateDTO:
     return await service.register_new_user(email=email, password=password)
 
@@ -34,7 +34,7 @@ async def login_user(
     response: Response,
     email: EmailStr,
     password: str,
-    service: AuthenticationService = Depends(get_auth_service)
+    service: IAuthenticationService = Depends(get_auth_service)
 ) -> TokenDTO:
     token = await service.login_user(email, password)
     response.set_cookie("booking_access_token", token.access_token, httponly=True)
