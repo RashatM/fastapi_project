@@ -2,7 +2,7 @@ from typing import Dict
 from abc import ABC, abstractmethod
 
 
-class IAuthenticationProvider(ABC):
+class IAuthenticationAdapter(ABC):
 
     @staticmethod
     @abstractmethod

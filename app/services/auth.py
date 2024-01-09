@@ -3,7 +3,7 @@ from pydantic import EmailStr
 from app.exceptions.auth_exceptions import UserAlreadyExistsException, UserIsNotAuthorizedException, \
     UserIsNotExistsException
 from app.interfaces.adapters.encrypt_adapter import IEncryptionAdapter
-from app.interfaces.auth_provider import IAuthenticationProvider
+from app.interfaces.auth_adapter import IAuthenticationAdapter
 from app.interfaces.repositories.users import IUserRepository
 from app.interfaces.services.auth import IAuthenticationService
 from app.dto.auth import UserPublicDTO, TokenDTO, UserPrivateDTO
@@ -16,7 +16,7 @@ class AuthenticationService(IAuthenticationService):
         self,
         uow: IUnitOfWork,
         user_repository: IUserRepository,
-        auth_provider: IAuthenticationProvider,
+        auth_provider: IAuthenticationAdapter,
         encrypt_adapter: IEncryptionAdapter
     ):
         self.uow = uow
