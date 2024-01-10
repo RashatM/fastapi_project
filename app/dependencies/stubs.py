@@ -30,5 +30,5 @@ def hotel_repository_provider():
     raise NotImplementedError
 
 
-def async_sessionmaker_provider():
+def async_session_pool_provider():
     raise NotImplementedError
