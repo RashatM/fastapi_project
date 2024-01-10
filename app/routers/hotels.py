@@ -36,6 +36,7 @@ async def get_hotel_by_id(
     return await service.get_hotel_by_id(hotel_id=hotel_id)
 
 
+
 @hotel_router.get("/{hotel_id}/rooms")
 async def get_rooms_by_hotel_and_time(
     hotel_id: int,
