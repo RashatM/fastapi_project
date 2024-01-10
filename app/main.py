@@ -1,5 +1,4 @@
 from contextlib import asynccontextmanager
-
 import uvicorn
 from fastapi import FastAPI
 
@@ -12,7 +11,6 @@ from app.config import settings
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print(1111111)
     engine = create_engine(database_url=settings.DATABASE_URL, echo_mode=True)
     pool = create_pool(engine=engine)
 
@@ -29,10 +27,7 @@ def build_app() -> FastAPI:
     app = FastAPI(lifespan=lifespan)
 
     setup_routes(app=app)
-    setup_di(
-        app=app,
-        pool=app.state.pool
-    )
+    setup_di(app=app)
     setup_exception_handlers(app=app)
 
     return app

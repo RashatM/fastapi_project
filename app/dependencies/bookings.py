@@ -5,7 +5,6 @@ from app.db.repositories.rooms import RoomRepository
 from app.db.uow import UnitOfWork
 from app.dependencies.stubs import uow_provider, session_provider, booking_repository_provider, room_repository_provider
 from app.db.repositories.bookings import BookingRepository
-from app.interfaces.uow import IUnitOfWork
 from app.services.bookings import BookingService
 
 

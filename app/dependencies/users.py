@@ -27,7 +27,7 @@ def get_auth_service(
     return AuthenticationService(
         uow=uow,
         user_repository=user_repository,
-        auth_provider=authentication_provider,
+        auth_adapter=authentication_provider,
         encrypt_adapter=encrypt_adapter
     )
 

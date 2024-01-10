@@ -16,12 +16,12 @@ class AuthenticationService(IAuthenticationService):
         self,
         uow: IUnitOfWork,
         user_repository: IUserRepository,
-        auth_provider: IAuthenticationAdapter,
+        auth_adapter: IAuthenticationAdapter,
         encrypt_adapter: IEncryptionAdapter
     ):
         self.uow = uow
         self.user_repository = user_repository
-        self.auth_provider = auth_provider
+        self.auth_adapter = auth_adapter
         self.encrypt_adapter = encrypt_adapter
 
     async def register_new_user(self, email: EmailStr, password: str) -> UserPrivateDTO:
@@ -45,12 +45,12 @@ class AuthenticationService(IAuthenticationService):
 
     async def login_user(self, email: EmailStr, password: str) -> TokenDTO:
         user = await self.authenticate_user(email=email, password=password)
-        access_token = self.auth_provider.create_user_token(user.id)
+        access_token = self.auth_adapter.create_user_token(user.id)
 
         return TokenDTO(access_token=access_token)
 
     async def verify_token(self, token: str) -> UserPrivateDTO:
-        user_id = self.auth_provider.get_token_sub(token)
+        user_id = self.auth_adapter.get_token_sub(token)
         user = await self.user_repository.find_user_by_id(user_id)
         if not user:
             raise UserIsNotExistsException
