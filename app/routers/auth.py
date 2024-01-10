@@ -1,7 +1,10 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, Response, status
 from pydantic import EmailStr
 
-from app.dependencies.users import get_auth_service, get_current_user
+from app.dependencies.providers.users import get_current_user
+from app.dependencies.stub import Stub
 from app.exceptions.auth_exceptions import UserAlreadyExistsException
 from app.exceptions.error_handlers.error_result import ErrorResult
 from app.interfaces.services.auth import IAuthenticationService
@@ -24,7 +27,7 @@ auth_router = APIRouter(
 async def register_user(
     email: EmailStr,
     password: str,
-    service: IAuthenticationService = Depends(get_auth_service)
+    service: Annotated[IAuthenticationService, Depends(Stub(IAuthenticationService))]
 ) -> UserPrivateDTO:
     return await service.register_new_user(email=email, password=password)
 
@@ -34,7 +37,7 @@ async def login_user(
     response: Response,
     email: EmailStr,
     password: str,
-    service: IAuthenticationService = Depends(get_auth_service)
+    service: Annotated[IAuthenticationService, Depends(Stub(IAuthenticationService))]
 ) -> TokenDTO:
     token = await service.login_user(email, password)
     response.set_cookie("booking_access_token", token.access_token, httponly=True)

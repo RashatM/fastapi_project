@@ -2,3 +2,4 @@
 /.idea/
 /backlog
 
+!/.idea/workspace.xml
