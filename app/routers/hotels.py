@@ -28,6 +28,7 @@ async def get_hotels_by_location_and_time(
     )
 
 
+
 @hotel_router.get("/id/{hotel_id}")
 async def get_hotel_by_id(
         hotel_id: int,
