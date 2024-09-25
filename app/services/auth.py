@@ -1,57 +1,69 @@
+from passlib.hash import bcrypt
 from pydantic import EmailStr
-
-from app.exceptions.auth_exceptions import UserAlreadyExistsException, UserIsNotAuthorizedException, \
-    UserIsNotExistsException
-from app.interfaces.adapters.encrypt_adapter import IEncryptionAdapter
-from app.interfaces.auth_adapter import IAuthenticationAdapter
-from app.interfaces.repositories.users import IUserRepository
-from app.interfaces.services.auth import IAuthenticationService
-from app.dto.auth import UserPublicDTO, TokenDTO, UserPrivateDTO
-from app.interfaces.uow import IUnitOfWork
+from fastapi import Response
+from datetime import datetime, timedelta
+from jose import jwt
 
 
-class AuthenticationService(IAuthenticationService):
+from app.auth.auth import get_password_hash, verify_password, create_user_token
+from app.exceptions.auth import UserAlreadyExistsException, UserIsNotAuthorizedException
+from app.models.users import UserModel
+from app.schemas.users import UserAuthSchema, Token
+from app.services.base import BaseService
+from app.config import settings
 
-    def __init__(
-        self,
-        uow: IUnitOfWork,
-        user_repository: IUserRepository,
-        auth_adapter: IAuthenticationAdapter,
-        encrypt_adapter: IEncryptionAdapter
-    ):
-        self.uow = uow
-        self.user_repository = user_repository
-        self.auth_adapter = auth_adapter
-        self.encrypt_adapter = encrypt_adapter
 
-    async def register_new_user(self, email: EmailStr, password: str) -> UserPrivateDTO:
-        if await self.user_repository.find_user_by_email(email):
+class AuthService(BaseService):
+
+    @staticmethod
+    def get_password_hash(password: str) -> str:
+        return bcrypt.hash(password)
+
+    @staticmethod
+    def verify_password(plain_password, hashed_password) -> bool:
+        return bcrypt.verify(plain_password, hashed_password)
+
+    @staticmethod
+    def create_access_token(data: dict) -> str:
+        to_encode = data.copy()
+        expire = datetime.utcnow() + timedelta(minutes=30)
+        to_encode.update({"exp": expire})
+        encoded_jwt = jwt.encode(
+            claims=to_encode,
+            key=settings.SECRET_KEY,
+            algorithm=settings.ALGORITHM
+        )
+        return encoded_jwt
+
+    def create_user_token(self, user_id: int) -> str:
+        return self.create_access_token(
+            data={"sub": user_id}
+        )
+
+    async def add_user(self, user_data: UserAuthSchema) -> UserModel:
+        exist_user = await self.uow.user_repository.get_user_by_email(email=user_data.email)
+        if exist_user:
             raise UserAlreadyExistsException
 
-        hashed_password = self.encrypt_adapter.get_password_hash(password)
+        hashed_password = get_password_hash(user_data.password)
 
-        new_user = await self.user_repository.add_new_user(
-            email=email,
+        new_user = await self.uow.user_repository.add_new_user(
+            email=user_data.email,
             hashed_password=hashed_password
         )
         await self.uow.commit()
+
         return new_user
 
-    async def authenticate_user(self, email: EmailStr, password: str) -> UserPublicDTO:
-        user = await self.user_repository.find_user_by_email(email=email)
-        if not (user and self.encrypt_adapter.verify_password(password, user.hashed_password)):
+    async def authenticate_user(self, email: EmailStr, password: str) -> UserModel:
+        user = await self.uow.user_repository.get_user_by_email(email=email)
+        if not (user and verify_password(password, user.hashed_password)):
             raise UserIsNotAuthorizedException
         return user
 
-    async def login_user(self, email: EmailStr, password: str) -> TokenDTO:
+    async def login_user(self, response: Response, email: EmailStr, password: str) -> Token:
         user = await self.authenticate_user(email=email, password=password)
-        access_token = self.auth_adapter.create_user_token(user.id)
+        access_token = create_user_token(user.id)
+        response.set_cookie("booking_access_token", access_token, httponly=True)
 
-        return TokenDTO(access_token=access_token)
-
-    async def verify_token(self, token: str) -> UserPrivateDTO:
-        user_id = self.auth_adapter.get_token_sub(token)
-        user = await self.user_repository.find_user_by_id(user_id)
-        if not user:
-            raise UserIsNotExistsException
-        return user
+        return Token(access_token=access_token)

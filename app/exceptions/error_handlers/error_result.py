@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from typing import Generic, TypeVar
 
-from pydantic import BaseModel
+from pydantic.generics import GenericModel
 
 TData = TypeVar("TData")
 
 
 @dataclass(frozen=True)
-class ErrorResult(BaseModel, Generic[TData]):
+class ErrorResult(GenericModel, Generic[TData]):
     message: str
     data: TData

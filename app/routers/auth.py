@@ -1,18 +1,15 @@
-from typing import Annotated
+from fastapi import APIRouter, Depends, status
 
-from fastapi import APIRouter, Depends, Response, status
-from pydantic import EmailStr
 
-from app.dependencies.providers.users import get_current_user
-from app.dependencies.stub import Stub
-from app.exceptions.auth_exceptions import UserAlreadyExistsException
+from app.dependencies.users import get_user_service
+from app.exceptions.auth import UserAlreadyExistsException
 from app.exceptions.error_handlers.error_result import ErrorResult
-from app.interfaces.services.auth import IAuthenticationService
-from app.dto.auth import TokenDTO, UserPrivateDTO
+from app.services.auth import UserService
+from app.schemas.users import UserAuthSchema
 
 auth_router = APIRouter(
     prefix="/auth",
-    tags=["Аутентификация и Авторизация"]
+    tags=["auth"]
 )
 
 
@@ -24,34 +21,14 @@ auth_router = APIRouter(
         }
     },
     status_code=status.HTTP_201_CREATED)
-async def register_user(
-    email: EmailStr,
-    password: str,
-    service: Annotated[IAuthenticationService, Depends(Stub(IAuthenticationService))]
-) -> UserPrivateDTO:
-    return await service.register_new_user(email=email, password=password)
+async def register_user(user_data: UserAuthSchema, service: UserService = Depends(get_user_service)):
+    await service.add_user(user_data)
 
 
 @auth_router.post("/login")
-async def login_user(
-    response: Response,
-    email: EmailStr,
-    password: str,
-    service: Annotated[IAuthenticationService, Depends(Stub(IAuthenticationService))]
-) -> TokenDTO:
-    token = await service.login_user(email, password)
-    response.set_cookie("booking_access_token", token.access_token, httponly=True)
-    return token
+async def login_user(user_data: UserAuthSchema, service: UserService = Depends(get_user_service)):
+    pass
 
-
-@auth_router.post("/logout")
-async def logout(response: Response):
-    response.delete_cookie("booking_access_token")
-
-
-@auth_router.get("/me")
-async def read_user_me(current_user: UserPrivateDTO = Depends(get_current_user)) -> UserPrivateDTO:
-    return current_user
 
 
 
